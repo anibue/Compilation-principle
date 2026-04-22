@@ -1,0 +1,13 @@
+=== COMPILE PL0 ===
+  0 PROGRAM EX10; 
+  0 VAR A,B; 
+  1 BEGIN 
+  2   A:=0; 
+  4   READ(B); 
+  6   IF A<>B THEN  WRITE(B); 
+ 13 END. 
+~~~ RUN PL0 ~~~
+? 456
+456
+~~~ END PL0 ~~~
+

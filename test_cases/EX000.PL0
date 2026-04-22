@@ -1,0 +1,12 @@
+PROGRAM EX000;
+VAR A,B;
+BEGIN
+  A:=88;
+  B:=11;
+  IF A<>B THEN WRITE(A);
+  ELSE
+  FOR
+  *=
+  /=
+  !=  
+END.

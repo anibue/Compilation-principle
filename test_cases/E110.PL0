@@ -1,0 +1,15 @@
+PROGRAM E110;
+VAR B,C;
+BEGIN
+   READ(B);
+   IF B#0 THEN
+   BEGIN
+     C:=5;
+     WRITE(C)
+   END
+  ELSE
+   BEGIN
+    C:=6;
+    WRITE(C)
+   END
+END. 

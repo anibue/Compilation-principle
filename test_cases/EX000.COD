@@ -1,0 +1,15 @@
+=== COMPILE PL0 ===
+  0 PROGRAM EX000; 
+  0 VAR A,B; 
+  1 BEGIN 
+  2   A:=88; 
+  4   B:=11; 
+  6   IF A<>B THEN WRITE(A); 
+ 13   ELSE 
+***      ^19
+ 13   FOR 
+ 13   *= 
+ 13   /= 
+ 13   !=   
+ 13 END. 
+ERROR IN PL/0 PROGRAM

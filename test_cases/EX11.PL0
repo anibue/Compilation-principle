@@ -1,0 +1,7 @@
+PROGRAM EX11;
+VAR A,B;
+BEGIN
+  A:=0;
+  READ(B);
+  IF A!=B THEN  WRITE(B);
+END.
