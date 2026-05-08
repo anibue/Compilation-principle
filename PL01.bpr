@@ -4,15 +4,17 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="project\PL01.exe"/>
-    <OBJFILES value="project\PL01.obj src\Unit1.obj"/>
+    <OBJFILES value="src\PL01.obj src\Unit1.obj"/>
     <RESFILES value="project\PL01.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) src\Unit1.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
     <SPARELIBS value="rtl.lib vcl.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi"/>
-    <PATHCPP value=".;src;project"/>
+    <PATHCPP value=".;src"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -23,7 +25,7 @@
     <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
     <MAINSOURCE value="src\PL01.cpp"/>
     <INCLUDEPATH value="src;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="project;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <LIBPATH value="src;project;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>

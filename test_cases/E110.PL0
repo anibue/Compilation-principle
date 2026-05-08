@@ -2,7 +2,7 @@ PROGRAM E110;
 VAR B,C;
 BEGIN
    READ(B);
-   IF B#0 THEN
+   IF B<>0 THEN
    BEGIN
      C:=5;
      WRITE(C)

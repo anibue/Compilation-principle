@@ -32,7 +32,7 @@ object Form1: TForm1
     Top = 528
     Width = 140
     Height = 25
-    Caption = '   3115004941   '
+    Caption = '   3123004857   '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -20
@@ -43,9 +43,9 @@ object Form1: TForm1
   object Label4: TLabel
     Left = 832
     Top = 584
-    Width = 167
+    Width = 374
     Height = 33
-    Caption = '  '#26472#37995#27744'  '
+    Caption = '  #26368#20255#32988  '
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -32
@@ -63,9 +63,9 @@ object Form1: TForm1
   object Label6: TLabel
     Left = 248
     Top = 0
-    Width = 121
-    Height = 33
-    Caption = '2018-04'
+    Width = 59
+    Height = 20
+    Caption = '2026-05'
   end
   object Label7: TLabel
     Left = 16
@@ -77,16 +77,16 @@ object Form1: TForm1
   object Label8: TLabel
     Left = 248
     Top = 48
-    Width = 121
-    Height = 33
-    Caption = '2018-06'
+    Width = 59
+    Height = 20
+    Caption = '2026-07'
   end
   object Label9: TLabel
     Left = 808
     Top = 480
-    Width = 211
+    Width = 162
     Height = 29
-    Caption = '2015'#32423#35745#31185'2'#29677'       '
+    Caption = #20152#24037#26234#33021#29677'       '
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -24
