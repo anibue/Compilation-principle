@@ -15,18 +15,24 @@ class TForm1 : public TForm
 __published:	// IDE-managed Components
     TButton *ButtonRun;
     TMemo *Memo1;
-    TEdit *EditName;
+    TComboBox *ComboCase;
+    TButton *ButtonRefresh;
+    TButton *ButtonClear;
     TLabel *Label1;
     TRadioGroup *ListSwitch;
-        TLabel *Label3;
-        TLabel *Label4;
-        TLabel *Label5;
-        TLabel *Label6;
-        TLabel *Label7;
-        TLabel *Label8;
-        TLabel *Label9;
+    TLabel *Label3;
+    TLabel *Label4;
+    TLabel *Label5;
+    TLabel *Label6;
+    TLabel *Label7;
+    TLabel *Label8;
+    TLabel *Label9;
     void __fastcall ButtonRunClick(TObject *Sender);
+    void __fastcall ButtonClearClick(TObject *Sender);
+    void __fastcall ButtonRefreshClick(TObject *Sender);
+    void __fastcall FormCreate(TObject *Sender);
 private:	// User declarations
+    void __fastcall LoadTestCases();
 public:		// User declarations
     __fastcall TForm1(TComponent* Owner);
     void __fastcall printfs(char* s);

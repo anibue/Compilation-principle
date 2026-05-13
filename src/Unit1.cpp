@@ -695,6 +695,83 @@ void Interpret() {
   fprintf(FOUT,"~~~ END PL0 ~~~\n");
 } /*Interpret*/
 //---------------------------------------------------------------------------
+void __fastcall TForm1::LoadTestCases() {
+  ComboCase->Items->Clear();
+  char exePath[MAX_PATH];
+  GetModuleFileName(NULL, exePath, MAX_PATH);
+  AnsiString baseDir = ExtractFilePath(AnsiString(exePath));
+  // parent directory (project root when exe is in project/)
+  AnsiString parentDir = ExtractFilePath(baseDir.SubString(1, baseDir.Length() - 1));
+
+  WIN32_FIND_DATA fd;
+
+  // scan exe dir itself: *.PL0
+  AnsiString pat0 = baseDir + "*.PL0";
+  HANDLE hFind = FindFirstFile(pat0.c_str(), &fd);
+  if (hFind != INVALID_HANDLE_VALUE) {
+    do {
+      AnsiString name = fd.cFileName;
+      name = name.SubString(1, name.Length() - 4);
+      ComboCase->Items->Add(name);
+    } while (FindNextFile(hFind, &fd));
+    FindClose(hFind);
+  }
+
+  // scan exe_dir\test_cases\*.PL0
+  AnsiString pat1 = baseDir + "test_cases\\*.PL0";
+  hFind = FindFirstFile(pat1.c_str(), &fd);
+  if (hFind != INVALID_HANDLE_VALUE) {
+    do {
+      AnsiString name = fd.cFileName;
+      name = name.SubString(1, name.Length() - 4);
+      if (ComboCase->Items->IndexOf(name) < 0)
+        ComboCase->Items->Add(name);
+    } while (FindNextFile(hFind, &fd));
+    FindClose(hFind);
+  }
+
+  // scan parent_dir\test_cases\*.PL0 (project root)
+  AnsiString pat2 = parentDir + "test_cases\\*.PL0";
+  hFind = FindFirstFile(pat2.c_str(), &fd);
+  if (hFind != INVALID_HANDLE_VALUE) {
+    do {
+      AnsiString name = fd.cFileName;
+      name = name.SubString(1, name.Length() - 4);
+      if (ComboCase->Items->IndexOf(name) < 0)
+        ComboCase->Items->Add(name);
+    } while (FindNextFile(hFind, &fd));
+    FindClose(hFind);
+  }
+
+  // scan parent_dir\*.PL0
+  AnsiString pat3 = parentDir + "*.PL0";
+  hFind = FindFirstFile(pat3.c_str(), &fd);
+  if (hFind != INVALID_HANDLE_VALUE) {
+    do {
+      AnsiString name = fd.cFileName;
+      name = name.SubString(1, name.Length() - 4);
+      if (ComboCase->Items->IndexOf(name) < 0)
+        ComboCase->Items->Add(name);
+    } while (FindNextFile(hFind, &fd));
+    FindClose(hFind);
+  }
+
+  if (ComboCase->Items->Count > 0 && ComboCase->Text.IsEmpty())
+    ComboCase->Text = ComboCase->Items->Strings[0];
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::FormCreate(TObject *Sender) {
+  LoadTestCases();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::ButtonClearClick(TObject *Sender) {
+  Memo1->Lines->Clear();
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::ButtonRefreshClick(TObject *Sender) {
+  LoadTestCases();
+}
+//---------------------------------------------------------------------------
 void __fastcall TForm1::ButtonRunClick(TObject *Sender) {
   /* 初始化单字符符号表 */
   for (CH=' '; CH<='^'; CH++) SSYM[CH]=NUL;
@@ -758,18 +835,33 @@ void __fastcall TForm1::ButtonRunClick(TObject *Sender) {
 
   /*
    * 输入/输出文件策略：
-   * 1) 先尝试当前目录：<name>.PL0
+   * 1) 先尝试 exe 同目录：<name>.PL0
    * 2) 若不存在，再尝试 test_cases\<name>.PL0
    * 3) 输出 COD 与输入路径保持一致
    */
-  AnsiString inputName = Form1->EditName->Text;
-  AnsiString srcPath = inputName + ".PL0";
-  AnsiString outPath = inputName + ".COD";
+  char exePath[MAX_PATH];
+  GetModuleFileName(NULL, exePath, MAX_PATH);
+  AnsiString baseDir = ExtractFilePath(AnsiString(exePath));
+  AnsiString parentDir = ExtractFilePath(baseDir.SubString(1, baseDir.Length() - 1));
+
+  AnsiString inputName = Form1->ComboCase->Text;
+  AnsiString srcPath = baseDir + inputName + ".PL0";
+  AnsiString outPath = baseDir + inputName + ".COD";
 
   FIN=fopen(srcPath.c_str(),"r");
   if (!FIN) {
-    srcPath = "test_cases\\" + inputName + ".PL0";
-    outPath = "test_cases\\" + inputName + ".COD";
+    srcPath = baseDir + "test_cases\\" + inputName + ".PL0";
+    outPath = baseDir + "test_cases\\" + inputName + ".COD";
+    FIN=fopen(srcPath.c_str(),"r");
+  }
+  if (!FIN) {
+    srcPath = parentDir + "test_cases\\" + inputName + ".PL0";
+    outPath = parentDir + "test_cases\\" + inputName + ".COD";
+    FIN=fopen(srcPath.c_str(),"r");
+  }
+  if (!FIN) {
+    srcPath = parentDir + inputName + ".PL0";
+    outPath = parentDir + inputName + ".COD";
     FIN=fopen(srcPath.c_str(),"r");
   }
 
