@@ -17,18 +17,26 @@ bcc32 -c -tWM -I"E:/BCB/include" -I"E:/BCB/include/vcl" -o"project/PL01.obj" src
 ilink32 -aa -Tpe -x -Gn -jE:\BCB\Lib\Obj -jE:\BCB\Lib -jE:\BCB\Lib\Release E:\BCB\Lib\c0w32.obj E:\BCB\Lib\Release\rtl.bpi E:\BCB\Lib\Release\vcl.bpi E:\BCB\Lib\Release\vclx.bpi E:\BCB\Lib\memmgr.lib E:\BCB\Lib\Obj\sysinit.obj project\PL01.obj project\Unit1.obj,project\PL01.exe,,E:\BCB\Lib\import32.lib E:\BCB\Lib\cp32mti.lib,,project\PL01.res
 ```
 
-Run the executable, enter a test case name (e.g., `EX01`), and click RUN. It searches for `.PL0` files in the current directory, then `test_cases\`.
+Note: `ilink32` must be invoked via `cmd //c "..."` wrapper when running from bash to avoid path parsing issues.
 
 Do not assume a modern build pipeline, CI, or automated test harness exists. If you introduce one, keep it additive.
 
+## Usage
+
+1. Run `project/PL01.exe`.
+2. The dropdown (ComboCase) auto-populates with `.PL0` file names found in the exe directory and `test_cases\`.
+3. Select or type a test case name (e.g., `E01`), then click **RUN**.
+4. Output appears in the Memo panel and a `.COD` file is generated alongside the source.
+5. **刷新列表** rescans directories. **清空输出** clears the Memo.
+
 ## Architecture
 
-The entire compiler is a **single-file implementation** in `src/Unit1.cpp` (~810 lines). All compiler state is global. There is no modular separation between lexer, parser, code generator, and interpreter.
+The entire compiler is a **single-file implementation** in `src/Unit1.cpp` (~900 lines). All compiler state is global. There is no modular separation between lexer, parser, code generator, and interpreter.
 
 **File roles:**
 - `src/PL01.cpp` — VCL entry point (WinMain), 21 lines.
-- `src/Unit1.h` — Form class `TForm1` with VCL controls and helper output methods (`printfs`, `printcs`, `printls`, `printrs`, `prinths`).
-- `src/Unit1.cpp` — Everything: lexer (`GetSym`), recursive-descent parser (`Block`, `STATEMENT`, `EXPRESSION`, `TERM`, `FACTOR`, `CONDITION`), code generator (`GEN`), symbol table (`ENTER`, `POSITION`), and stack-based interpreter (`Interpret`).
+- `src/Unit1.h` — Form class `TForm1` with VCL controls (`ComboCase`, `ButtonRun`, `ButtonRefresh`, `ButtonClear`, `Memo1`, `ListSwitch`) and helper output methods (`printfs`, `printcs`, `printls`, `printrs`, `prinths`).
+- `src/Unit1.cpp` — Everything: lexer (`GetSym`), recursive-descent parser (`Block`, `STATEMENT`, `EXPRESSION`, `TERM`, `FACTOR`, `CONDITION`), code generator (`GEN`), symbol table (`ENTER`, `POSITION`), stack-based interpreter (`Interpret`), and UI logic (`LoadTestCases`, `FormCreate`, event handlers).
 - `src/Unit1.dfm` — VCL form layout.
 - `pascal_reference/PL0.PAS` — Original Pascal reference implementation this was ported from.
 
@@ -40,7 +48,14 @@ The entire compiler is a **single-file implementation** in `src/Unit1.cpp` (~810
 - `CODE[200]` — generated P-Code program
 
 **Compilation pipeline** (orchestrated by `ButtonRunClick`):
-`GetSym` -> parse `PROGRAM` header -> `Block()` -> expect `.` -> `Interpret()` if no errors. Output goes to both the GUI memo and a `.COD` file.
+1. Initialize reserved words, symbol sets, and operator mappings.
+2. Locate input `.PL0` file: try exe dir, then `test_cases\`, then parent dir's `test_cases\`, then parent dir itself.
+3. `GetSym` -> parse `PROGRAM` header -> `Block()` -> expect `.` -> `Interpret()` if no errors.
+4. Output goes to both the GUI memo and a `.COD` file.
+
+**UI initialization** (`FormCreate` -> `LoadTestCases`):
+- Uses Win32 `FindFirstFile`/`FindNextFile` to scan for `*.PL0` in exe dir, `test_cases\` (exe and parent level), and parent dir.
+- Deduplicates entries and populates the ComboCase dropdown.
 
 ## Language Features
 
