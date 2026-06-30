@@ -1,0 +1,43 @@
+=== COMPILE PL0 ===
+  0 PROGRAM RET01; 
+  0 VAR A; 
+  1 PROCEDURE Q; 
+  1 BEGIN 
+  3   A:=100; 
+  5   RETURN; 
+  6   A:=200 
+  7 END; 
+  1  JMP   0   2
+  2  INI   0   3
+  3  LIT   0 100
+  4  STO   1   3
+  5  OPR   0   0
+  6  LIT   0 200
+  7  STO   1   3
+  8  OPR   0   0
+  9 BEGIN 
+ 10   A:=0; 
+ 12   CALL Q; 
+ 13   WRITE(A) 
+ 15 END. 
+  0  JMP   0   9
+  1  JMP   0   2
+  2  INI   0   3
+  3  LIT   0 100
+  4  STO   1   3
+  5  OPR   0   0
+  6  LIT   0 200
+  7  STO   1   3
+  8  OPR   0   0
+  9  INI   0   4
+ 10  LIT   0   0
+ 11  STO   0   3
+ 12  CAL   0   2
+ 13  LOD   0   3
+ 14  OPR   0  14
+ 15  OPR   0  15
+ 16  OPR   0   0
+~~~ RUN PL0 ~~~
+100
+~~~ END PL0 ~~~
+

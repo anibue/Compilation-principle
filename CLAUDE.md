@@ -59,12 +59,9 @@ The entire compiler is a **single-file implementation** in `src/Unit1.cpp` (~900
 
 ## Language Features
 
-**Working:** PROGRAM, CONST, VAR, PROCEDURE declarations; BEGIN/END blocks; assignment (`:=`); arithmetic (`+`, `-`, `*`, `/`); comparisons (`=`, `<>`, `!=`, `<`, `<=`, `>`, `>=`); ODD; IF/THEN/ELSE; WHILE/DO; CALL; READ/WRITE; compound assignment (`*=`, `/=`); nested procedures with lexical scoping (up to 3 levels).
+**Working:** PROGRAM, CONST, VAR, PROCEDURE declarations; BEGIN/END blocks; assignment (`:=`); arithmetic (`+`, `-`, `*`, `/`); comparisons (`=`, `<>`, `!=`, `<`, `<=`, `>`, `>=`); ODD; IF/THEN/ELSE; WHILE/DO; CALL; READ/WRITE; compound assignment (`+=`, `-=`, `*=`, `/=`); increment/decrement (`A++`, `A--`); FOR-TO / FOR-DOWNTO loops; RETURN statement; nested procedures with lexical scoping (up to 3 levels).
 
-**Lexed but NOT implemented in codegen/interpreter:**
-- `FOR` / `TO` / `DOWNTO` — tokens exist, keywords registered, but `STATEMENT()` has no case for `FORSYM`
-- `RETURN` — token exists but not handled
-- `++`, `--`, `+=`, `-=` — tokens lexed but not handled in `STATEMENT()`
+**Lexed but NOT implemented in codegen/interpreter:** *(none — all extended tokens are now end-to-end)*
 
 ## Testing
 

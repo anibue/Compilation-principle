@@ -468,26 +468,44 @@ void STATEMENT(SYMSET FSYS,int LEV,int &TX) {   /*STATEMENT*/
 			Error(12); i=0;
 		  }
         GetSym();
-    {
-      /*
-       * 赋值语句扩展：
-       *   A := expr   -> 直接计算 expr 后存回 A
-       *   A *= expr   -> 先 LOD A，再与 expr 相乘，最后 STO A
-       *   A /= expr   -> 先 LOD A，再与 expr 相除，最后 STO A
-       */
-      SYMBOL assignOp=SYM;
-      if (SYM==BECOMES || SYM==TIMESBECOMES || SYM==SLASHBECOMES) GetSym();
-      else Error(13);
-      if (i!=0 && assignOp==TIMESBECOMES)
-      GEN(LOD,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
-      if (i!=0 && assignOp==SLASHBECOMES)
-      GEN(LOD,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
-		EXPRESSION(FSYS,LEV,TX);
-      if (i!=0 && assignOp==TIMESBECOMES) GEN(OPR,0,4);
-      if (i!=0 && assignOp==SLASHBECOMES) GEN(OPR,0,5);
-      if (i!=0) GEN(STO,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
-    }
-		break;
+        {
+          SYMBOL assignOp=SYM;
+          /* ++ / -- as statement: A++ or A-- */
+          if (assignOp==PLUSPLUS || assignOp==MINUSMINUS) {
+            GetSym();
+            if (i!=0) {
+              GEN(LOD,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
+              GEN(LIT,0,1);
+              if (assignOp==PLUSPLUS) GEN(OPR,0,2);
+              else GEN(OPR,0,3);
+              GEN(STO,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
+            }
+          }
+          else {
+            /*
+             * 赋值语句扩展：
+             *   A := expr   -> 直接计算 expr 后存回 A
+             *   A += expr   -> 先 LOD A，再与 expr 相加，最后 STO A
+             *   A -= expr   -> 先 LOD A，再与 expr 相减，最后 STO A
+             *   A *= expr   -> 先 LOD A，再与 expr 相乘，最后 STO A
+             *   A /= expr   -> 先 LOD A，再与 expr 相除，最后 STO A
+             */
+            if (SYM==BECOMES || SYM==TIMESBECOMES || SYM==SLASHBECOMES
+                || SYM==PLUSEQ || SYM==MINUSEQ) GetSym();
+            else Error(13);
+            if (i!=0 && (assignOp==TIMESBECOMES || assignOp==PLUSEQ || assignOp==MINUSEQ))
+              GEN(LOD,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
+            if (i!=0 && assignOp==SLASHBECOMES)
+              GEN(LOD,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
+            EXPRESSION(FSYS,LEV,TX);
+            if (i!=0 && assignOp==PLUSEQ)  GEN(OPR,0,2);
+            if (i!=0 && assignOp==MINUSEQ) GEN(OPR,0,3);
+            if (i!=0 && assignOp==TIMESBECOMES) GEN(OPR,0,4);
+            if (i!=0 && assignOp==SLASHBECOMES) GEN(OPR,0,5);
+            if (i!=0) GEN(STO,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
+          }
+        }
+        break;
 	case READSYM:
 		GetSym();
 		if (SYM!=LPAREN) Error(34);
@@ -583,6 +601,65 @@ void STATEMENT(SYMSET FSYS,int LEV,int &TX) {   /*STATEMENT*/
 		GEN(JMP,0,CX1);
 		CODE[CX2].A=CX;
 		break;
+    /*
+     * FOR <var> := <expr1> TO <expr2> DO <stmt>
+     * FOR <var> := <expr1> DOWNTO <expr2> DO <stmt>
+     *
+     * Codegen (TO):
+     *   var := expr1
+     * L1: LOD var; expr2; OPR <= ; JPC L2
+     *   stmt
+     *   LOD var; LIT 1; OPR +; STO var
+     *   JMP L1
+     * L2:
+     *
+     * Codegen (DOWNTO): same but OPR >= and OPR -
+     */
+    case FORSYM: {
+        int isDownTo=0;
+        GetSym();
+        if (SYM!=IDENT) Error(14);
+        else {
+          i=POSITION(ID,TX);
+          if (i==0) Error(11);
+          else if (TABLE[i].KIND!=VARIABLE) { Error(12); i=0; }
+          GetSym();
+          if (SYM!=BECOMES) Error(13);
+          else GetSym();
+          /* initial expression */
+          EXPRESSION(SymSetAdd(TOSYM,SymSetAdd(DOWNTOSYM,FSYS)),LEV,TX);
+          if (i!=0) GEN(STO,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
+          CX1=CX;
+          if (i!=0) GEN(LOD,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
+          if (SYM==TOSYM) { isDownTo=0; GetSym(); }
+          else if (SYM==DOWNTOSYM) { isDownTo=1; GetSym(); }
+          else Error(39);
+          EXPRESSION(SymSetAdd(DOSYM,FSYS),LEV,TX);
+          if (i!=0) {
+            if (isDownTo) GEN(OPR,0,11); /* >= */
+            else GEN(OPR,0,13);          /* <= */
+          }
+          CX2=CX; GEN(JPC,0,0);
+          if (SYM==DOSYM) GetSym();
+          else Error(18);
+          STATEMENT(FSYS,LEV,TX);
+          if (i!=0) {
+            GEN(LOD,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
+            GEN(LIT,0,1);
+            if (isDownTo) GEN(OPR,0,3);  /* - */
+            else GEN(OPR,0,2);           /* + */
+            GEN(STO,LEV-TABLE[i].vp.LEVEL,TABLE[i].vp.ADR);
+          }
+          GEN(JMP,0,CX1);
+          CODE[CX2].A=CX;
+        }
+        break;
+    }
+    /* RETURN statement: generate OPR 0,0 (return from procedure) */
+    case RETURNSYM:
+        GetSym();
+        GEN(OPR,0,0);
+        break;
   }
   TEST(FSYS,SymSetNULL(),19);
 } /*STATEMENT*/
@@ -829,6 +906,8 @@ void __fastcall TForm1::ButtonRunClick(TObject *Sender) {
   STATBEGSYS[IFSYM]=1;
   STATBEGSYS[WHILESYM]=1;
   STATBEGSYS[WRITESYM]=1;
+  STATBEGSYS[FORSYM]=1;
+  STATBEGSYS[RETURNSYM]=1;
   FACBEGSYS[IDENT] =1;
   FACBEGSYS[NUMBER]=1;
   FACBEGSYS[LPAREN]=1;

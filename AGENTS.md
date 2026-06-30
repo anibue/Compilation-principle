@@ -44,7 +44,7 @@ Preserve the existing C++Builder/VCL style. Use the current brace and indentatio
 
 DFM files use `#NNNNN` format for Unicode characters (decimal code points). For Chinese characters, ANSI_CHARSET with 仿宋 font renders correctly. GB2312_CHARSET with 宋体 may cause garbled text — verify encoding when modifying labels.
 
-When working on language features, verify whether a token is only recognized lexically or is actually implemented end-to-end. In particular, `FOR` is present in the reserved-word/token layer but is not implemented as a working statement form in `STATEMENT`; do not describe it as supported unless you complete lexer, parser, code generation, and test coverage together.
+When working on language features, verify whether a token is only recognized lexically or is actually implemented end-to-end. As of the current revision, every extended token (`ELSE`, `FOR/TO/DOWNTO`, `RETURN`, `+=`, `-=`, `*=`, `/=`, `++`, `--`, `<>`, `!=`) is implemented through lexer, parser, code generation, and interpreter — paired positive regression tests exist for each. Do not describe a feature as supported unless lexer + parser + codegen + test coverage are all in place together.
 
 ## Testing Guidelines
 

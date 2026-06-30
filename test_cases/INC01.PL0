@@ -1,0 +1,10 @@
+PROGRAM INC01;
+VAR A, B;
+BEGIN
+  A:=5;
+  A++;
+  WRITE(A);
+  B:=10;
+  B--;
+  WRITE(B)
+END.

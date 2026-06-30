@@ -1,0 +1,14 @@
+PROGRAM COMP01;
+VAR A, B;
+BEGIN
+  A:=10;
+  B:=5;
+  A+=B;
+  WRITE(A);
+  A-=B;
+  WRITE(A);
+  A*=B;
+  WRITE(A);
+  A/=B;
+  WRITE(A)
+END.

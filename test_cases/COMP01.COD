@@ -1,0 +1,57 @@
+=== COMPILE PL0 ===
+  0 PROGRAM COMP01; 
+  0 VAR A, B; 
+  1 BEGIN 
+  2   A:=10; 
+  4   B:=5; 
+  6   A+=B; 
+ 10   WRITE(A); 
+ 13   A-=B; 
+ 17   WRITE(A); 
+ 20   A*=B; 
+ 24   WRITE(A); 
+ 27   A/=B; 
+ 31   WRITE(A) 
+ 33 END. 
+  0  JMP   0   1
+  1  INI   0   5
+  2  LIT   0  10
+  3  STO   0   3
+  4  LIT   0   5
+  5  STO   0   4
+  6  LOD   0   3
+  7  LOD   0   4
+  8  OPR   0   2
+  9  STO   0   3
+ 10  LOD   0   3
+ 11  OPR   0  14
+ 12  OPR   0  15
+ 13  LOD   0   3
+ 14  LOD   0   4
+ 15  OPR   0   3
+ 16  STO   0   3
+ 17  LOD   0   3
+ 18  OPR   0  14
+ 19  OPR   0  15
+ 20  LOD   0   3
+ 21  LOD   0   4
+ 22  OPR   0   4
+ 23  STO   0   3
+ 24  LOD   0   3
+ 25  OPR   0  14
+ 26  OPR   0  15
+ 27  LOD   0   3
+ 28  LOD   0   4
+ 29  OPR   0   5
+ 30  STO   0   3
+ 31  LOD   0   3
+ 32  OPR   0  14
+ 33  OPR   0  15
+ 34  OPR   0   0
+~~~ RUN PL0 ~~~
+15
+10
+50
+10
+~~~ END PL0 ~~~
+
