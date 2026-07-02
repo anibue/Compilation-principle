@@ -1,0 +1,7 @@
+PROGRAM EDPLUSPLUS;
+VAR A;
+BEGIN
+  A := 5;
+  A++;
+  WRITE(A)
+END.

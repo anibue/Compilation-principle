@@ -1,0 +1,7 @@
+PROGRAM EMINUS;
+VAR A;
+BEGIN
+  A := 20;
+  A -= 5;
+  WRITE(A)
+END.

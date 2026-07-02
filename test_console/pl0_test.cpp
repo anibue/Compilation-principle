@@ -574,6 +574,7 @@ void STATEMENT(SYMSET FSYS,int LEV,int &TX) {
         GEN(OPR,0,0);
         break;
   }
+  fprintf(FOUT, "[STATEMENT END sym=%s]\n", SYMOUT[SYM]);
   TEST(FSYS,SymSetNULL(),19);
 }
 

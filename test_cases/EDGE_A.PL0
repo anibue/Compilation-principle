@@ -1,0 +1,5 @@
+program EDGE_A;
+var a;
+begin
+  a := 5
+end.

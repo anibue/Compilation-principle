@@ -1,0 +1,7 @@
+PROGRAM EDGE01;
+VAR I;
+BEGIN
+  I := 5;
+  FOR I := 1 TO 1 DO
+    WRITE(I)
+END.

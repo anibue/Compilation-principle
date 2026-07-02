@@ -1,0 +1,7 @@
+PROGRAM EMINUSMINUS;
+VAR A;
+BEGIN
+  A := 10;
+  A--;
+  WRITE(A)
+END.

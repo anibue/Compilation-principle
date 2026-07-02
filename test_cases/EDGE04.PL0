@@ -1,0 +1,7 @@
+PROGRAM EDGE04;
+VAR A;
+BEGIN
+  A := 5;
+  A += 3 * 2;
+  WRITE(A)
+END.

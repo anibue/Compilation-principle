@@ -1,0 +1,12 @@
+PROGRAM E3;
+VAR A, B;
+PROCEDURE MULTIPLY;
+BEGIN
+  A := A * B
+END;
+BEGIN
+  A := 3;
+  B := 7;
+  CALL MULTIPLY;
+  WRITE(A)
+END.

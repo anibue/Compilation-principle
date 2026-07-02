@@ -1,0 +1,15 @@
+PROGRAM EDGE05;
+VAR FLAG, I;
+BEGIN
+  FLAG := 1;
+  IF FLAG = 1 THEN
+  BEGIN
+    FOR I := 1 TO 3 DO
+      IF I > 1 THEN
+        WRITE(I * 10)
+      ELSE
+        WRITE(I)
+  END
+  ELSE
+    WRITE(0)
+END.

@@ -1,0 +1,9 @@
+PROGRAM E2;
+VAR I;
+BEGIN
+  FOR I := 1 TO 10 DO
+  BEGIN
+    I += 2
+  END;
+  WRITE(I)
+END.
