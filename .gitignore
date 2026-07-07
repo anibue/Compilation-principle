@@ -1,0 +1,63 @@
+# Local agent/editor state
+.claude/
+.codex/
+.agents/
+
+# Temporary work directories
+build_tmp/
+tmp/
+temp/
+
+# C++Builder / Borland build artifacts
+*.obj
+*.tds
+*.ilc
+*.ild
+*.ilf
+*.ils
+*.map
+*.dcu
+*.ddp
+*.dsk
+*.local
+*.identcache
+*.~*
+*.bak
+
+# Generated executables and linker intermediates
+project/*.exe
+project/*.obj
+project/*.tds
+project/*.map
+project/*.rc
+test_console/*.obj
+test_console/*.exe
+test_console/*.tds
+test_console/*.ilc
+test_console/*.ild
+test_console/*.ilf
+test_console/*.ils
+
+# Keep the checked-in resource file used by the legacy project
+!project/PL01.res
+!project/PL01.RES
+
+# Office temporary lock files
+~$*
+**/~$*
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Generated report render/cache output
+docs/notes/
+docs/reference/
+docs/rendered_repo_doc/
+docs/report_figures/_run/
+docs/pl0_repo_summary.docx
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,24 @@
+flowchart TD
+    A[PROGRAM 语句<br/>起始] --> B[解析 const / var / proc 声明]
+    B --> C{碰到 .?}
+    C -- 否 --> D[解析 STATEMENT]
+    C -- 是 --> Z[结束 Block 编译]
+    D --> D1{IDENT?}
+    D1 -- 是 --> E1[赋值 / 复合赋值 / ++ / --]
+    D1 -- 否 --> D2{IF?}
+    D2 -- 是 --> E2[解析条件<br/>JPC 假分支回填<br/>处理 ELSE 同理]
+    D2 -- 否 --> D3{WHILE?}
+    D3 -- 是 --> E3[CX1 = 循环顶<br/>JPC 跳出回填<br/>JMP 回 CX1]
+    D3 -- 否 --> D4{FOR?}
+    D4 -- 是 --> E4[expr1 初始化<br/>expr2 限值<br/>条件 OPR<=/>=<br/>自增/自减<br/>JMP 循环顶]
+    D4 -- 否 --> D5{BEGIN?}
+    D5 -- 是 --> E5[循环多条语句<br/>直到 END]
+    D5 -- 否 --> D6{CALL?}
+    D6 -- 是 --> E6[CAL 指令]
+    D6 -- 否 --> D7{READ?}
+    D7 -- 是 --> E7[READ 指令]
+    D6 -- 否 --> D8{WRITE?}
+    D8 -- 是 --> E8[WRITE 指令]
+    D8 -- 否 --> D9{RETURN?}
+    D9 -- 是 --> E9[OPR 0,0 返程]
+    D9 -- 否 --> E[Error 19]

@@ -1,0 +1,13 @@
+flowchart TD
+    A[识别到 IDENT<br/>查 POSITION] --> B{KIND 是<br/>VARIABLE?}
+    B -- 否 --> E[Error 12]
+    B -- 是 --> C[GetSym 读下一个 token]
+    C --> D{token 类型?}
+    D -- BECOMES --> F1[直接解析 expr<br/>STO I, expr]
+    D -- TIMBESBECOMES --> F2[LOD I<br/>解析 expr<br/>OPR 0,4<br/>STO I]
+    D -- SLASHBECOMES --> F3[LOD I<br/>解析 expr<br/>OPR 0,5<br/>STO I]
+    D -- PLUSEQ --> F4[LOD I<br/>解析 expr<br/>OPR 0,2 加<br/>STO I]
+    D -- MINUSEQ --> F5[LOD I<br/>解析 expr<br/>OPR 0,3 减<br/>STO I]
+    D -- PLUSPLUS --> G1[GetSym<br/>LOD I<br/>LIT 0,1<br/>OPR 0,2 加<br/>STO I]
+    D -- MINUSMINUS --> G2[GetSym<br/>LOD I<br/>LIT 0,1<br/>OPR 0,3 减<br/>STO I]
+    D -- 其他 --> H[Error 13<br/>赋值号期待]

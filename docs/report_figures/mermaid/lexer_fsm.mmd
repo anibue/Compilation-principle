@@ -1,0 +1,40 @@
+stateDiagram-v2
+    [*] --> Start
+    Start: 初始状态
+    Plus: + 已识别
+    PlusPlus: PLUSPLUS<br/>GetSym
+    PlusEq: PLUSEQ<br/>GetSym
+    OnlyPlus: PLUS<br/>（单字符）
+    Minus: - 已识别
+    MinusMinus: MINUSMINUS
+    MinusEq: MINUSEQ
+    OnlyMinus: MINUS
+    Star: * 已识别
+    StarEq: TIMESBECOMES
+    OnlyStar: TIMES
+    Slash: / 已识别
+    SlashEq: SLASHBECOMES
+    OnlySlash: SLASH
+    Bang: ! 已识别
+    BangEq: NEQ !=
+
+    Start --> Plus: 读 +
+    Plus --> PlusPlus: 再读 +
+    Plus --> PlusEq: 再读 =
+    Plus --> OnlyPlus: 其他
+
+    Start --> Minus: 读 -
+    Minus --> MinusMinus: 再读 -
+    Minus --> MinusEq: 再读 =
+    Minus --> OnlyMinus: 其他
+
+    Start --> Star: 读 *
+    Star --> StarEq: 再读 =
+    Star --> OnlyStar: 其他
+
+    Start --> Slash: 读 /
+    Slash --> SlashEq: 再读 =
+    Slash --> OnlySlash: 其他
+
+    Start --> Bang: 读 !
+    Bang --> BangEq: 再读 =

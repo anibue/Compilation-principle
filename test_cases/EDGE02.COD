@@ -1,0 +1,47 @@
+=== COMPILE PL0 ===
+  0 PROGRAM EDGE02; 
+  0 VAR I, J; 
+  1 BEGIN 
+  2   FOR I := 1 TO 2 DO 
+  8     FOR J := 1 TO 3 DO 
+ 14       WRITE(I * J) 
+ 18 END. 
+  0  JMP   0   1
+  1  INI   0   5
+  2  LIT   0   1
+  3  STO   0   3
+  4  LOD   0   3
+  5  LIT   0   2
+  6  OPR   0  13
+  7  JPC   0  29
+  8  LIT   0   1
+  9  STO   0   4
+ 10  LOD   0   4
+ 11  LIT   0   3
+ 12  OPR   0  13
+ 13  JPC   0  24
+ 14  LOD   0   3
+ 15  LOD   0   4
+ 16  OPR   0   4
+ 17  OPR   0  14
+ 18  OPR   0  15
+ 19  LOD   0   4
+ 20  LIT   0   1
+ 21  OPR   0   2
+ 22  STO   0   4
+ 23  JMP   0  10
+ 24  LOD   0   3
+ 25  LIT   0   1
+ 26  OPR   0   2
+ 27  STO   0   3
+ 28  JMP   0   4
+ 29  OPR   0   0
+~~~ RUN PL0 ~~~
+1
+2
+3
+2
+4
+6
+~~~ END PL0 ~~~
+

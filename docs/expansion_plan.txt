@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-
+"""Phase 1 expansion plan: +20 pages → target 45+ pages total.
+
+New sections to add (after 第一章, expanding existing chapters):
+
+1.1  (move content from original 1.1 into more detail)
+1.2  (motivation: textbook theory vs practice gap)
+1.3  (environment: BCB6, bcc32, ilink32, cmd//c quirks)
+1.4  (SECTION NEW): 课程设计指导书原文要求 — list each requirement and map to this report
+
+2.1  (expand architecture: include diagram showing all four stages + data flow)
+2.2  (expand recursive descent: add EBNF grammar rules in BNF notation)
+2.3  (expand symbol table: add POSITION search example walkthrough)
+2.4  (expand interpreter execution model: add stack frame diagram for BASE)
+2.5  (SECTION NEW): PL/0 语言文法完整描述 — all EBNF rules
+
+3.1  (expand lexer extensions)
+3.3  (expand binary search: add step-by-step trace for "DOWNTO" lookup)
+
+4.2  (expand ELSE backfill: add diagram of CX1/CX2 backpatching)
+4.3  (expand compound assignment: add matrix of all four ops — += -= *= /=)
+4.5  (expand FOR loop: add detailed assembly trace)
+4.6  (expand RETURN: add BAS/RET stack teardown diagram)
+
+5.1  (expand GEN/STATEMENT/INTERPRET to per-function 20+ line analysis)
+5.2  (expand error recovery: add all error codes table from src)
+5.3  (expand OPR instructions: full opcode matrix)
+5.4  (SECTION NEW): Block 函数深度分析 — declaration processing walkthrough
+5.5  (SECTION NEW): BASE 静态链与栈帧管理 — diagram + example
+
+6.1  (expand test case organization)
+6.2  (expand: add full RUN output for each test, not just last line)
+6.3  (expand reverse tests: add full error transcript)
+6.4  (expand console driver: add architecture diff with GUI)
+6.5  (expand: add timing/regression stats table)
+6.6  (SECTION NEW): GUI 版本运行实录 — describe manual test procedure
+
+7.1  (expand BCB6 build)
+7.2  (expand GUI automation workaround)
+7.3  (expand lexer coupling)
+7.4  (SECTION NEW): 解释器与编译器的 P-Code 同步性
+7.5  (SECTION NEW): 本次扩展未涉及的边界情况
+
+8.   (expand summary with concrete stats: LOC changed, instructions added, etc.)
+
+New appendices:
+A. Source code diff summary (expand)
+B. Core function list (expand)
+C. 测试用例源代码附录 (NEW — list all .PL0 test sources)
+D. 编译错误代码表 (NEW — all error codes with meaning/description)

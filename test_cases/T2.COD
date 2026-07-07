@@ -1,0 +1,62 @@
+=== COMPILE PL0 ===
+  0 CONST I=5, B=20; C=1, D=2; 
+***     ^0
+  1 VAR I,J; X,Y; 
+  1 PROCEDURE J; 
+  1 BEGIN 
+  3   J:=I 
+***   ^12
+  4 END; 
+  1  JMP   0   2
+  2  INI   0   3
+  3  LOD   1   3
+  4  OPR   0   0
+  5 PROCEDURE K; 
+  5 BEGIN 
+  7   J:=I 
+***   ^12
+  8 END; 
+  5  JMP   0   6
+  6  INI   0   3
+  7  LOD   1   3
+  8  OPR   0   0
+  9 BEGIN 
+ 10   WRITE(I); 
+ 13   I:=1; 
+ 15   WHILE I<10 DO 
+ 19     BEGIN 
+ 19       BEGIN 
+ 19       END; 
+ 19       WRITE(I); 
+ 22       I:=I+1 
+ 24     END 
+ 26 END. 
+  0  JMP   0   9
+  1  JMP   0   2
+  2  INI   0   3
+  3  LOD   1   3
+  4  OPR   0   0
+  5  JMP   0   6
+  6  INI   0   3
+  7  LOD   1   3
+  8  OPR   0   0
+  9  INI   0   7
+ 10  LOD   0   3
+ 11  OPR   0  14
+ 12  OPR   0  15
+ 13  LIT   0   1
+ 14  STO   0   3
+ 15  LOD   0   3
+ 16  LIT   0  10
+ 17  OPR   0  10
+ 18  JPC   0  27
+ 19  LOD   0   3
+ 20  OPR   0  14
+ 21  OPR   0  15
+ 22  LOD   0   3
+ 23  LIT   0   1
+ 24  OPR   0   2
+ 25  STO   0   3
+ 26  JMP   0  15
+ 27  OPR   0   0
+ERROR IN PL/0 PROGRAM

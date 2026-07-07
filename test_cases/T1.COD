@@ -1,0 +1,72 @@
+=== COMPILE PL0 ===
+  0 PROGRAM P1; 
+  0 CONST I=5, B=20; C=1, D=2; 
+  1 VAR I; X,Y; 
+  1 PROCEDURE J; 
+  1 BEGIN 
+  3   X:=B 
+  4 END; 
+  1  JMP   0   2
+  2  INI   0   3
+  3  LIT   0  20
+  4  STO   1   4
+  5  OPR   0   0
+  6 PROCEDURE K; 
+  6 BEGIN 
+  8   Y:=C 
+  9 END; 
+  6  JMP   0   7
+  7  INI   0   3
+  8  LIT   0   1
+  9  STO   1   5
+ 10  OPR   0   0
+ 11 BEGIN 
+ 12   I:=10; 
+ 14   WHILE I>0 DO 
+ 18     BEGIN 
+ 18       BEGIN 
+ 18       END; 
+ 18       WRITE(I); 
+ 21       I:=I-1 
+ 23     END 
+ 25 END. 
+  0  JMP   0  11
+  1  JMP   0   2
+  2  INI   0   3
+  3  LIT   0  20
+  4  STO   1   4
+  5  OPR   0   0
+  6  JMP   0   7
+  7  INI   0   3
+  8  LIT   0   1
+  9  STO   1   5
+ 10  OPR   0   0
+ 11  INI   0   6
+ 12  LIT   0  10
+ 13  STO   0   3
+ 14  LOD   0   3
+ 15  LIT   0   0
+ 16  OPR   0  12
+ 17  JPC   0  26
+ 18  LOD   0   3
+ 19  OPR   0  14
+ 20  OPR   0  15
+ 21  LOD   0   3
+ 22  LIT   0   1
+ 23  OPR   0   3
+ 24  STO   0   3
+ 25  JMP   0  14
+ 26  OPR   0   0
+~~~ RUN PL0 ~~~
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+~~~ END PL0 ~~~
+

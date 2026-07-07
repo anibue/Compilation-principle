@@ -1,0 +1,15 @@
+flowchart LR
+    A[PL/0<br/>源代码] --> B[词法分析<br/>GetSym]
+    B --> C[语法分析<br/>Block/Statement]
+    C --> D[代码生成<br/>GEN + TABLE]
+    D --> E[P-Code<br/>CODE array]
+    E --> F[解释执行<br/>Interpret]
+    F --> G[运行输出]
+
+    subgraph shared[共享数据]
+      T[TABLE 符号表]
+      K[KWORD/WSYM/SSYM 关键字表]
+    end
+    B -.uses.-> K
+    C -.reads/writes.-> T
+    D -.reads.-> T

@@ -1,0 +1,25 @@
+flowchart TD
+    A[识别到 FORSYM<br/>进入 FOR 处理] --> B[GetSym<br/>读循环变量 I]
+    B --> C[POSITION 查表<br/>确认是 VARIABLE]
+    C --> D{是 := ?}
+    D -- 否 --> E1[Error 13<br/>应有 :=]
+    D -- 是 --> F[GetSym 后<br/>解析 expr1]
+    F --> G[STO I, expr1<br/>完成循环变量初始化]
+    G --> H[记下 CX1 = CX<br/>LOD I]
+    H --> I{TOSYM<br/>或 DOWNTOSYM?}
+    I -- TOSYM --> J1[isDownTo=0<br/>GetSym]
+    I -- DOWNTOSYM --> J2[isDownTo=1<br/>GetSym]
+    I -- 其他 --> J3[Error 39<br/>应 TO/DOWNTO]
+    J1 --> K[解析 expr2]
+    J2 --> K
+    K --> L{isDownTo?}
+    L -- 否 --> M1[GEN OPR 0,13<br/><=]
+    L -- 是 --> M2[GEN OPR 0,11<br/>>=]
+    M1 --> N[记 CX2 = CX<br/>GEN JPC 0,0]
+    M2 --> N
+    N --> O{是 DOSYM?}
+    O -- 否 --> P1[Error 18]
+    O -- 是 --> P2[GetSym<br/>解析 stmt]
+    P2 --> Q[LOD I<br/>LIT 1<br/>if isDownTo OPR 0,3<br/>else OPR 0,2<br/>STO I]
+    Q --> R[GEN JMP 0, CX1]
+    R --> S[CODE CX2 .A = CX<br/>回填跳出地址]
